@@ -1,38 +1,573 @@
-.App {
-  text-align: center;
+/* src/App.css */
+
+/* ------------------------------------------- */
+/* 1. Cores e Fontes Globais (Design Moderno) */
+/* ------------------------------------------- */
+:root {
+    --primary-color: #6366f1; /* Indigo moderno */
+    --primary-dark: #4f46e5;
+    --primary-light: #818cf8;
+    --secondary-color: #8b5cf6; /* Roxo complementar */
+    --success-color: #10b981; /* Verde para sucesso */
+    --error-color: #ef4444; /* Vermelho para erros */
+    --warning-color: #f59e0b; /* Laranja para avisos */
+    
+    --bg-light: #f8fafc; /* Fundo muito claro */
+    --bg-white: #ffffff;
+    --bg-card: #ffffff;
+    --bg-hover: #f1f5f9;
+    
+    --text-dark: #1e293b;
+    --text-medium: #475569;
+    --text-light: #64748b;
+    --text-muted: #94a3b8;
+    
+    --border-color: #e2e8f0;
+    --border-radius: 12px;
+    --border-radius-lg: 16px;
+    --border-radius-sm: 8px;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+    box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+    margin: 0;
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-attachment: fixed;
+    color: var(--text-dark);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
+
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ------------------------------------------- */
+/* 2. Header (Barra Superior Moderna) */
+/* ------------------------------------------- */
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.98) 100%);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-lg);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.App-link {
-  color: #61dafb;
+.header-title {
+    text-align: center;
+    padding: 24px 20px 16px 20px;
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* ------------------------------------------- */
+/* 3. Barra de Navegação (Links dos Tópicos) */
+/* ------------------------------------------- */
+
+.nav-bar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 12px 20px;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.nav-bar a {
+    color: var(--text-medium);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+    font-size: 0.95em;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-bar a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.nav-bar a:hover::before {
+    left: 100%;
+}
+
+.nav-bar a:hover {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.nav-bar a.active {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+/* ------------------------------------------- */
+/* 4. Conteúdo Principal (Cards Modernos) */
+/* ------------------------------------------- */
+
+.app-main {
+    padding: 40px 20px;
+    max-width: 1400px;
+    margin: 30px auto;
+    background: var(--bg-white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+    text-align: left;
+    flex: 1;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.app-main h2 {
+    color: var(--text-dark);
+    border-bottom: 3px solid;
+    border-image: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) 1;
+    padding-bottom: 12px;
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-size: 1.75em;
+    font-weight: 700;
+}
+
+.app-main p {
+    color: var(--text-medium);
+    margin-bottom: 20px;
+    line-height: 1.7;
+}
+
+/* ------------------------------------------- */
+/* 5. Componentes Genéricos */
+/* ------------------------------------------- */
+
+/* Cards e Containers */
+.card {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Botões Modernos */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--error-color) 0%, #dc2626 100%);
+    color: white;
+}
+
+/* Inputs Modernos */
+input[type="number"],
+input[type="text"],
+select {
+    padding: 10px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.95em;
+    transition: var(--transition);
+    background: var(--bg-white);
+    color: var(--text-dark);
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Resultados e Mensagens */
+.result-success {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    border-left: 4px solid var(--success-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.result-error {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    border-left: 4px solid var(--error-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+    color: var(--error-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.result-warning {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-left: 4px solid var(--warning-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+    color: #92400e;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Cards clicáveis na página inicial */
+.nav-bar a .card {
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-bar a:hover .card {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Grid de Cards da Página Inicial */
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.topics-grid > a {
+    width: 100%;
+    display: block;
+    text-decoration: none;
+}
+
+.topics-grid > a > .card {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Estilos dos cards de tópicos */
+.topic-card {
+    text-align: center;
+    cursor: pointer;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: var(--transition);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.topic-card:active {
+    transform: scale(0.98);
+}
+
+.topic-icon {
+    font-size: 3em;
+    margin-bottom: 16px;
+}
+
+.topic-title {
+    margin: 0 0 12px 0;
+    color: var(--primary-color);
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.topic-subtitle {
+    margin: 0;
+    color: var(--text-medium);
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.topic-description {
+    margin: 8px 0 0 0;
+    font-size: 0.9em;
+    color: var(--text-light);
+    line-height: 1.4;
+}
+
+/* Página inicial - container responsivo */
+.home-container {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.home-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 60px 40px;
+    color: white;
+    margin-bottom: 40px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.home-title {
+    font-size: 3em;
+    margin: 0 0 20px 0;
+    font-weight: 700;
+}
+
+.home-subtitle {
+    font-size: 1.2em;
+    opacity: 0.95;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+    .topics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 992px) {
+    .topics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .topic-card {
+        height: auto;
+        min-height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-title {
+        font-size: 1.8em;
+        padding: 20px 16px 12px 16px;
+    }
+    
+    .nav-bar {
+        padding: 10px 16px;
+    }
+    
+    .nav-bar a {
+        padding: 8px 12px;
+        font-size: 0.85em;
+    }
+    
+    .app-main {
+        padding: 24px 16px;
+        margin: 20px 16px;
+        border-radius: var(--border-radius);
+    }
+    
+    .app-main h2 {
+        font-size: 1.5em;
+    }
+    
+    /* Página inicial responsiva */
+    .home-container {
+        padding: 20px 16px;
+    }
+    
+    .home-header {
+        padding: 40px 24px;
+        margin-bottom: 24px;
+        border-radius: 12px;
+    }
+    
+    .home-title {
+        font-size: 2em;
+        margin: 0 0 16px 0;
+    }
+    
+    .home-subtitle {
+        font-size: 1em;
+    }
+    
+    .topics-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-top: 24px;
+        padding: 0;
+    }
+    
+    .topic-card {
+        height: auto;
+        min-height: 180px;
+        padding: 24px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-header {
+        padding: 30px 20px;
+    }
+    
+    .home-title {
+        font-size: 1.6em;
+        margin: 0 0 12px 0;
+    }
+    
+    .home-subtitle {
+        font-size: 0.9em;
+    }
+    
+    .nav-bar a {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+    
+    .topic-card {
+        min-height: 160px;
+        padding: 20px 12px;
+    }
+    
+    .topic-icon {
+        font-size: 2.5em;
+        margin-bottom: 12px;
+    }
+    
+    .topic-title {
+        font-size: 1.1em;
+        margin: 0 0 8px 0;
+    }
+    
+    .topic-subtitle {
+        font-size: 0.95em;
+    }
+    
+    .topic-description {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 360px) {
+    .home-container {
+        padding: 16px 12px;
+    }
+    
+    .home-header {
+        padding: 24px 16px;
+    }
+    
+    .home-title {
+        font-size: 1.4em;
+    }
+    
+    .home-subtitle {
+        font-size: 0.85em;
+    }
+    
+    .nav-bar {
+        padding: 8px 12px;
+    }
+    
+    .nav-bar a {
+        padding: 6px 8px;
+        font-size: 0.75em;
+    }
+    
+    .topic-card {
+        min-height: 150px;
+        padding: 16px 10px;
+    }
+    
+    .topic-icon {
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+    
+    .topic-title {
+        font-size: 1em;
+        margin: 0 0 6px 0;
+    }
+    
+    .topic-subtitle {
+        font-size: 0.9em;
+    }
+    
+    .topic-description {
+        font-size: 0.8em;
+    }
 }
