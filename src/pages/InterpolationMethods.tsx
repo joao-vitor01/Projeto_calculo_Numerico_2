@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import PointInput, { Point } from '../components/PointInput';
 import { linearRegression, calculateError } from '../algorithms/minimosQuadrados';
-import { lagrangeInterpolation } from '../algorithms/lagrange'; // NOVO IMPORT
-import { newtonInterpolation } from '../algorithms/newtonInterpolation'; // NOVO IMPORT
+import { lagrangeInterpolation } from '../algorithms/lagrange'; 
+import { newtonInterpolation } from '../algorithms/newtonInterpolation'; 
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
 type T3Method = 'lagrange' | 'newton' | 'linear_regression';
 
@@ -79,25 +81,15 @@ const InterpolationMethods: React.FC = () => {
 
             {/* Seleção do Método */}
             <div className="card" style={{ marginBottom: '24px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <label style={{ fontWeight: 600, color: 'var(--text-dark)', fontSize: '1.1em' }}>
+                <div className="t3-controls" style={{ flexWrap: 'wrap' }}>
+                    <div className="t3-method">
+                        <label className="t3-method-label">
                             🔧 Método de Solução:
                         </label>
                         <select
                             value={selectedMethod}
                             onChange={(e) => setSelectedMethod(e.target.value as T3Method)}
-                            style={{ 
-                                padding: '12px 16px',
-                                fontSize: '1em',
-                                minWidth: '280px',
-                                border: '2px solid var(--border-color)',
-                                borderRadius: 'var(--border-radius-sm)',
-                                background: 'var(--bg-white)',
-                                color: 'var(--text-dark)',
-                                fontWeight: 500,
-                                cursor: 'pointer'
-                            }}
+                            className="t3-method-select"
                         >
                             <option value="linear_regression">Regressão - Reta (Mínimos Quadrados)</option>
                             <option value="lagrange">Polinômio de Lagrange</option>
@@ -106,22 +98,13 @@ const InterpolationMethods: React.FC = () => {
                     </div>
                     
                     {/* Campo de Estimação */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <label style={{ fontWeight: 600, color: 'var(--text-dark)' }}>
-                            Estimar X =
-                        </label>
-                        <input 
-                            type="number" 
-                            value={estimateX} 
+                    <div className="t3-estimate">
+                        <label className="t3-estimate-label">Estimar X =</label>
+                        <input
+                            type="number"
+                            value={estimateX}
                             onChange={(e) => setEstimateX(parseFloat(e.target.value))}
-                            style={{ 
-                                width: '100px', 
-                                padding: '12px 16px',
-                                border: '2px solid var(--border-color)',
-                                borderRadius: 'var(--border-radius-sm)',
-                                fontSize: '1em',
-                                textAlign: 'center'
-                            }}
+                            className="t3-estimate-input"
                         />
                     </div>
                 </div>
@@ -168,7 +151,7 @@ const InterpolationMethods: React.FC = () => {
                             border: '1px solid var(--success-color)'
                         }}>
                             <strong style={{ color: 'var(--text-dark)', display: 'block', marginBottom: '8px' }}>
-                                Erro Quadrático ($\Sigma[F(x_{'i'})-G(x_{'i'})]^{2}$):
+                                Erro Quadrático (<InlineMath math={'\\Sigma[F(x_i)-G(x_i)]^{2}'}/>):
                             </strong>
                             <span style={{ 
                                 color: 'var(--primary-color)',
@@ -189,7 +172,7 @@ const InterpolationMethods: React.FC = () => {
                             border: '1px solid var(--success-color)'
                         }}>
                             <strong style={{ color: 'var(--text-dark)', display: 'block', marginBottom: '8px' }}>
-                                Estimativa $F({estimateX})$:
+                                Estimativa <InlineMath math={`F(${estimateX})`} />:
                             </strong>
                             <span style={{ 
                                 color: 'var(--primary-color)',

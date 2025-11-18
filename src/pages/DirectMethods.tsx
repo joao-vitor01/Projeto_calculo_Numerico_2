@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import MatrixInput from '../components/MatrixInput';
 import { gaussElimination } from '../algorithms/gaussElimination';
-import { luFactorization } from '../algorithms/luFactorization'; // NOVO IMPORT
-import { gaussJordan } from '../algorithms/gaussJordan'; // NOVO IMPORT
+import { luFactorization } from '../algorithms/luFactorization'; 
+import { gaussJordan } from '../algorithms/gaussJordan'; 
 
 type Method = 'gauss' | 'lu' | 'jordan';
 
@@ -32,7 +32,7 @@ const DirectMethods: React.FC = () => {
                 setError("Método de cálculo não selecionado.");
                 return;
         }
-        // ... (resto da lógica de tratamento de erro)
+        
         if (result === null) {
             setError("Não foi possível resolver o sistema. Verifique a matriz e tente novamente.");
             setSolution(null);
@@ -44,7 +44,7 @@ const DirectMethods: React.FC = () => {
     return (
         <div>
             <h2>Tópico 01: Sistemas de Equações Lineares - Métodos Diretos</h2>
-            <p>Escolha o método e insira os coeficientes (A) e os termos independentes (b) do seu sistema linear. Você pode usar os dados dos Problemas 1, 2 ou 3.</p>
+            <p>Escolha o método e insira os coeficientes (A) e os termos independentes (b) do seu sistema linear</p>
 
             {/* Seleção do Método */}
             <div className="card" style={{ marginBottom: '24px' }}>

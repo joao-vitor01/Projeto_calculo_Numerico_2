@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Routes, Route, Link, useLocation} from 'react-r
 import './App.css';
 
 import DirectMethods from './pages/DirectMethods';
-import InterativeMethods from './pages/IntereativeMethods';
+import InterativeMethods from './pages/InterativeMethods';
 import InterpolationMethods from './pages/InterpolationMethods';
 import NumericalIntegration from './pages/NumericalIntegration';
 

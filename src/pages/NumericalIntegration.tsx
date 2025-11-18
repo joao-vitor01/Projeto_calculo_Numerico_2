@@ -1,7 +1,9 @@
 
 import React, { useState } from 'react';
 import PointInput, { Point } from '../components/PointInput';
-import { trapezoidalRule, simpsonRule } from '../algorithms/integracaoNumerica'; // Importa os algoritmos de integração
+import { trapezoidalRule, simpsonRule } from '../algorithms/integracaoNumerica';
+import 'katex/dist/katex.min.css';
+import { InlineMath } from 'react-katex';
 
 type T4Method = 'trapezoidal' | 'simpson';
 
@@ -63,7 +65,7 @@ const NumericalIntegration: React.FC = () => {
     return (
         <div>
             <h2>Tópico 04: Integração Numérica (Cálculo de Área)</h2>
-            <p>Insira os pontos. Os pontos devem ter espaçamento uniforme.</p>
+            <p>Insira os pontos, eles devem ter espaçamento uniforme.</p>
 
             {/* Seleção do Método */}
             <div className="card" style={{ marginBottom: '24px' }}>
@@ -122,7 +124,7 @@ const NumericalIntegration: React.FC = () => {
                             color: 'var(--primary-color)',
                             fontWeight: 700
                         }}>
-                            {result.toFixed(4)} $m^2$
+                            {result.toFixed(4)} <InlineMath math ='m^2'/>
                         </p>
                     </div>
                     <p style={{ 

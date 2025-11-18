@@ -38,5 +38,3 @@ export function gaussJordan(A: number[][], b: number[]): number[] | null {
 
     return x;
 }
-
-

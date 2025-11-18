@@ -1,5 +1,5 @@
 
-import { gaussElimination } from './gaussElimination'; // Reutiliza o resolvedor de sistema
+import { gaussElimination } from './gaussElimination'; 
 
 export interface Point {
     x: number;
@@ -59,4 +59,3 @@ export function calculateError(points: Point[], coefficients: number[]): number 
     return errorSum;
 }
 
-// OBS: Para Parábola e Exponencial, você terá que criar funções separadas com sistemas normais 3x3.

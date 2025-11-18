@@ -14,7 +14,7 @@ export function trapezoidalRule(points: Point[]): number {
     const n = points.length - 1; // Número de subintervalos
     if (n < 1) return 0;
 
-    // Assumimos que os pontos são igualmente espaçados (como solicitado no problema)
+    // Assumimos que os pontos são igualmente espaçados
     const h = points[1].x - points[0].x; // Largura do subintervalo
 
     let sum = 0;

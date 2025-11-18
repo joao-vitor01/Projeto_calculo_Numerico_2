@@ -1,5 +1,4 @@
 
-
 import { Point } from '../components/PointInput';
 
 /**

@@ -1,4 +1,3 @@
-// src/algorithms/lagrange.ts
 
 import { Point } from '../components/PointInput';
 
