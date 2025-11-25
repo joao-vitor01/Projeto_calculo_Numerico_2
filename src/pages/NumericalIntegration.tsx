@@ -4,15 +4,15 @@ import { trapezoidalRule, simpsonRule } from '../algorithms/integracaoNumerica';
 
 type T4Method = 'trapezoidal' | 'simpson';
 
-const NumericalIntegration: React.FC = () => {
+const NumericalIntegration = () => {
     const [selectedMethod, setSelectedMethod] = useState<T4Method>('trapezoidal');
     const [result, setResult] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const initialPoints: Point[] = [
-        { x: 0, y: 0 }, { x: 2, y: 1.8 }, { x: 4, y: 4 }, { x: 6, y: 4 }, 
-        { x: 10, y: 6 }, { x: 12, y: 4 }, { x: 14, y: 3.6 }, { x: 16, y: 3.4 }, 
-        { x: 18, y: 2.8 }, { x: 20, y: 0 }
+        { x: 0, y: 0 }, { x: 2, y: 1.8 }, { x: 4, y: 2 }, { x: 6, y: 4 }, 
+        { x: 8, y: 4 }, { x: 10, y: 6 }, { x: 12, y: 4 }, { x: 14, y: 3.6 }, 
+        { x: 16, y: 3.4 }, { x: 18, y: 2.8 }, { x: 20, y: 0 }
     ];
 
     const handleSolve = (points: Point[]) => {

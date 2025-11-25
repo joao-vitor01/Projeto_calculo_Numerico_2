@@ -1,4 +1,3 @@
-// src/pages/DirectMethods.tsx (CÓDIGO ATUALIZADO)
 
 import React, { useState } from 'react';
 import MatrixInput from '../components/MatrixInput';
@@ -8,7 +7,7 @@ import { gaussJordan } from '../algorithms/gaussJordan';
 
 type Method = 'gauss' | 'lu' | 'jordan';
 
-const DirectMethods: React.FC = () => {
+const DirectMethods = () => {
     const [selectedMethod, setSelectedMethod] = useState<Method>('gauss');
     const [solution, setSolution] = useState<number[] | null>(null);
     const [error, setError] = useState<string | null>(null);

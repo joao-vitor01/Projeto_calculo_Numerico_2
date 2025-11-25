@@ -13,8 +13,8 @@ import { newtonInterpolation } from '../algorithms/newtonInterpolation';
 import 'katex/dist/katex.min.css';
 import { InlineMath } from 'react-katex';
 
-// Atualizado para incluir os novos métodos de regressão
-type T3Method = 'lagrange' | 'newton' | 'linear_regression' | 'quadratic_regression' | 'exponential_regression';
+// Métodos suportados na UI: regressão (todos os ajustes) ou interpolação (Lagrange/Newton)
+type T3Method = 'regression' | 'lagrange' | 'newton';
 
 // Interface para um resultado ÚNICO (usada para Interpolação ou o método selecionado)
 interface T3Result { 
@@ -45,17 +45,19 @@ const quadraticModel = (x: number, [a0, a1, a2]: number[]): number => a0 + a1 * 
 const exponentialModel = (x: number, [a, b]: number[]): number => a * Math.exp(b * x);
 
 
-const InterpolationMethods: React.FC = () => {
-    const [selectedMethod, setSelectedMethod] = useState<T3Method>('linear_regression');
+const InterpolationMethods = () => {
+    const [selectedMethod, setSelectedMethod] = useState<T3Method>('regression');
     const [results, setResults] = useState<T3Result | null>(null);
     const [regressionResults, setRegressionResults] = useState<RegressionResults | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [estimateX, setEstimateX] = useState<number>(1.15); 
 
     const getMinPoints = (method: T3Method) => {
-        if (method === 'quadratic_regression') return 3; // Parábola requer 3 pontos
-        if (method === 'linear_regression' || method === 'exponential_regression') return 2; // Reta/Exponencial requer 2
-        return 2; 
+        // Para calcular os 3 ajustes (reta, parábola, exponencial) precisamos
+        // de pelo menos 3 pontos para que a parábola possa ser estimada.
+        if (method === 'regression') return 3;
+        // Interpolação (Lagrange/Newton) precisa de pelo menos 2 pontos.
+        return 2;
     };
 
     const handleSolve = (points: Point[]) => {
@@ -91,45 +93,22 @@ const InterpolationMethods: React.FC = () => {
 
 
             // ==============================================
-            // 2. Lógica para o Método SELECIONADO (Exibe o resultado específico)
+            // 2. Lógica para o Método SELECIONADO
+            // - Se 'regression', apenas exibe os 3 ajustes (já calculados acima)
+            // - Se 'lagrange' ou 'newton', calcula a estimativa para X
             // ==============================================
-
-            switch (selectedMethod) {
-                case 'linear_regression':
-                    if (linearCoeffs) {
-                        const [a0, a1] = linearCoeffs;
-                        result.equation = `Reta: G(x) = ${a0.toFixed(4)} + ${a1.toFixed(4)}x`;
-                        result.error = linearError ?? undefined;
-                    } else { throw new Error("Ajuste linear falhou."); }
-                    break;
-                
-                case 'quadratic_regression':
-                    if (quadraticCoeffs) {
-                        const [a0, a1, a2] = quadraticCoeffs;
-                        result.equation = `Parábola: G(x) = ${a0.toFixed(4)} + ${a1.toFixed(4)}x + ${a2.toFixed(4)}x^2`;
-                        result.error = quadraticError ?? undefined;
-                    } else { throw new Error("Ajuste quadrático falhou."); }
-                    break;
-
-                case 'exponential_regression':
-                    if (expCoeffs) {
-                        const [a, b] = expCoeffs;
-                        result.equation = `Exponencial: G(x) = ${a.toFixed(4)}e^{${b.toFixed(4)}x}`;
-                        result.error = expError ?? undefined;
-                    } else { throw new Error("Ajuste exponencial falhou (verifique se todos y > 0)."); }
-                    break;
-
-                case 'lagrange':
-                    estimatedY = lagrangeInterpolation(points, estimateX);
-                    result.equation = `Polinômio de Lagrange (Grau ${points.length - 1})`;
-                    result.estimate = estimatedY;
-                    break;
-
-                case 'newton':
-                    estimatedY = newtonInterpolation(points, estimateX);
-                    result.equation = `Polinômio de Newton (Grau ${points.length - 1})`;
-                    result.estimate = estimatedY;
-                    break;
+            if (selectedMethod === 'regression') {
+                // regressão: os 3 ajustes já foram armazenados em regressionResults
+                // opcionalmente podemos preencher uma descrição geral
+                result.equation = 'Regressão: Reta, Parábola e Exponencial (Mínimos Quadrados)';
+            } else if (selectedMethod === 'lagrange') {
+                estimatedY = lagrangeInterpolation(points, estimateX);
+                result.equation = `Polinômio de Lagrange (Grau ${points.length - 1})`;
+                result.estimate = estimatedY;
+            } else if (selectedMethod === 'newton') {
+                estimatedY = newtonInterpolation(points, estimateX);
+                result.equation = `Polinômio de Newton (Grau ${points.length - 1})`;
+                result.estimate = estimatedY;
             }
 
             // ==============================================
@@ -155,7 +134,7 @@ const InterpolationMethods: React.FC = () => {
     return (
         <div>
             <h2>Tópico 03: Interpolação Polinomial / Mínimos Quadrados</h2>
-            <p>Insira a tabela de dados. Use a caixa "Estimar X" para interpolação ou selecione o ajuste de regressão.</p>
+            <p>Insira a tabela de dados. Selecione o método e use "Estimar X".</p>
 
             {/* Seleção do Método */}
             <div className="card" style={{ marginBottom: '24px' }}>
@@ -169,9 +148,7 @@ const InterpolationMethods: React.FC = () => {
                             onChange={(e) => setSelectedMethod(e.target.value as T3Method)}
                             className="t3-method-select"
                         >
-                            <option value="linear_regression">Regressão - Reta (M.Q.)</option>
-                            <option value="quadratic_regression">Regressão - Parábola (M.Q.)</option>
-                            <option value="exponential_regression">Regressão - Exponencial (M.Q.)</option>
+                            <option value="regression">Regressão (Reta, Parábola e Exponencial)</option>
                             <option value="lagrange">Polinômio de Lagrange (Interpolação)</option>
                             <option value="newton">Polinômio de Newton (Interpolação)</option>
                         </select>
@@ -194,42 +171,87 @@ const InterpolationMethods: React.FC = () => {
 
             {/* --- NOVO BLOCO: Exibição de TODOS os Ajustes de Regressão --- */}
             {/* Este bloco aparece SEMPRE que a regressão for calculada, permitindo a comparação */}
-            {regressionResults && (
+            {regressionResults && selectedMethod === 'regression' && (
                 <div className="result-success" style={{ marginTop: '20px', padding: '15px' }}>
                     <h4 style={{ color: 'var(--success-color)', fontSize: '1.3em', borderBottom: '2px solid #ddd', paddingBottom: '10px' }}>
                         📈 Comparação dos Ajustes de Mínimos Quadrados
                     </h4>
 
-                    {/* Reta */}
+                    {/* Reta - caixa */}
                     {regressionResults.linear.coeffs && (
-                        <div style={{ padding: '10px 0', borderBottom: '1px dashed #ccc' }}>
-                            <strong>Reta: </strong>
-                            <InlineMath math={`G(x) = ${regressionResults.linear.coeffs[0].toFixed(4)} + ${regressionResults.linear.coeffs[1].toFixed(4)}x`} />
-                            <br/>
-                            **Erro Quadrático:** <span style={{ fontWeight: 700 }}>{regressionResults.linear.error?.toFixed(6) ?? 'N/A'}</span>
+                        <div style={{ marginBottom: '12px' }}>
+                            <div style={{ 
+                                marginBottom: '8px',
+                                padding: '12px',
+                                background: 'rgba(255, 255, 255, 0.9)',
+                                borderRadius: 'var(--border-radius-sm)',
+                                border: '1px solid var(--success-color)'
+                            }}>
+                                <strong style={{ display: 'block', marginBottom: '6px' }}>Reta (Ajuste Linear)</strong>
+                                <div style={{ color: 'var(--primary-color)', fontWeight: 600 }}>
+                                    <InlineMath math={`G(x) = ${regressionResults.linear.coeffs[0].toFixed(4)} + ${regressionResults.linear.coeffs[1].toFixed(4)} x`} />
+                                </div>
+                                <div style={{ marginTop: '8px' }}>
+                                    <strong>Erro:</strong>{' '}
+                                    {regressionResults.linear.error !== null
+                                        ? <InlineMath math={`E = ${regressionResults.linear.error.toFixed(6)}`} />
+                                        : <span style={{ fontWeight: 700 }}>N/A</span>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     )}
 
-                    {/* Parábola */}
+                    {/* Parábola - caixa */}
                     {regressionResults.quadratic.coeffs && (
-                        <div style={{ padding: '10px 0', borderBottom: '1px dashed #ccc' }}>
-                            <strong>Parábola: </strong>
-                            <InlineMath math={`G(x) = ${regressionResults.quadratic.coeffs[0].toFixed(4)} + ${regressionResults.quadratic.coeffs[1].toFixed(4)}x + ${regressionResults.quadratic.coeffs[2].toFixed(4)}x^2`} />
-                            <br/>
-                            **Erro Quadrático:** <span style={{ fontWeight: 700 }}>{regressionResults.quadratic.error?.toFixed(6) ?? 'N/A'}</span>
+                        <div style={{ marginBottom: '12px' }}>
+                            <div style={{ 
+                                marginBottom: '8px',
+                                padding: '12px',
+                                background: 'rgba(255, 255, 255, 0.9)',
+                                borderRadius: 'var(--border-radius-sm)',
+                                border: '1px solid var(--success-color)'
+                            }}>
+                                <strong style={{ display: 'block', marginBottom: '6px' }}>Parábola (Ajuste Quadrático)</strong>
+                                <div style={{ color: 'var(--primary-color)', fontWeight: 600 }}>
+                                    <InlineMath math={`G(x) = ${regressionResults.quadratic.coeffs[0].toFixed(4)} + ${regressionResults.quadratic.coeffs[1].toFixed(4)} x + ${regressionResults.quadratic.coeffs[2].toFixed(4)} x^{2}`} />
+                                </div>
+                                <div style={{ marginTop: '8px' }}>
+                                    <strong>Erro:</strong>{' '}
+                                    {regressionResults.quadratic.error !== null
+                                        ? <InlineMath math={`E = ${regressionResults.quadratic.error.toFixed(6)}`} />
+                                        : <span style={{ fontWeight: 700 }}>N/A</span>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     )}
 
-                    {/* Exponencial */}
+                    {/* Exponencial - caixa */}
                     {regressionResults.exponential.coeffs && (
-                        <div style={{ padding: '10px 0' }}>
-                            <strong>Exponencial: </strong>
-                            <InlineMath math={`G(x) = ${regressionResults.exponential.coeffs[0].toFixed(4)}e^{${regressionResults.exponential.coeffs[1].toFixed(4)}x}`} />
-                            <br/>
-                            **Erro Quadrático:** <span style={{ fontWeight: 700 }}>{regressionResults.exponential.error?.toFixed(6) ?? 'N/A'}</span>
+                        <div style={{ marginBottom: '12px' }}>
+                            <div style={{ 
+                                marginBottom: '8px',
+                                padding: '12px',
+                                background: 'rgba(255, 255, 255, 0.9)',
+                                borderRadius: 'var(--border-radius-sm)',
+                                border: '1px solid var(--success-color)'
+                            }}>
+                                <strong style={{ display: 'block', marginBottom: '6px' }}>Exponencial (Ajuste Exponencial)</strong>
+                                <div style={{ color: 'var(--primary-color)', fontWeight: 600 }}>
+                                    <InlineMath math={`G(x) = ${regressionResults.exponential.coeffs[0].toFixed(4)} e^{${regressionResults.exponential.coeffs[1].toFixed(4)} x}`} />
+                                </div>
+                                <div style={{ marginTop: '8px' }}>
+                                    <strong>Erro:</strong>{' '}
+                                    {regressionResults.exponential.error !== null
+                                        ? <InlineMath math={`E = ${regressionResults.exponential.error.toFixed(6)}`} />
+                                        : <span style={{ fontWeight: 700 }}>N/A</span>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     )}
-                    
+
                     {/* NOTE: O código de plotagem deve vir aqui, usando os coeficientes (coeffs) para gerar os pontos e desenhar as 3 curvas. */}
                 </div>
             )}
@@ -237,7 +259,7 @@ const InterpolationMethods: React.FC = () => {
 
 
             {/* Exibição do Resultado ÚNICO (Para o método ESPECÍFICO selecionado) */}
-            {results && (
+            {results && selectedMethod !== 'regression' && (
                 <div className="result-success">
                     <h4 style={{ marginTop: 0, marginBottom: '20px', color: 'var(--success-color)', fontSize: '1.3em' }}>
                         ✅ Resultado Selecionado
@@ -255,13 +277,12 @@ const InterpolationMethods: React.FC = () => {
                             <strong style={{ color: 'var(--text-dark)', display: 'block', marginBottom: '8px' }}>
                                 Função/Polinômio:
                             </strong>
-                            <span style={{ 
-                                color: 'var(--primary-color)',
-                                fontSize: '1.1em',
-                                fontWeight: 600
-                            }}>
-                                {results.equation}
-                            </span>
+                            <div style={{ color: 'var(--primary-color)', fontSize: '1.1em', fontWeight: 600 }}>
+                                {/* Se for interpolação, results.equation normalmente é um rótulo.
+                                    Para manter saída consistente com KaTeX, renderizamos rótulo em texto
+                                    e valores numéricos (estimativa/coef) com InlineMath abaixo. */}
+                                <span>{results.equation}</span>
+                            </div>
                         </div>
                     )}
                     
@@ -277,13 +298,9 @@ const InterpolationMethods: React.FC = () => {
                             <strong style={{ color: 'var(--text-dark)', display: 'block', marginBottom: '8px' }}>
                                 Erro Quadrático (<InlineMath math={'\\Sigma[F(x_i)-G(x_i)]^{2}'}/>):
                             </strong>
-                            <span style={{ 
-                                color: 'var(--primary-color)',
-                                fontSize: '1.2em',
-                                fontWeight: 700
-                            }}>
-                                {results.error.toFixed(4)}
-                            </span>
+                            <div style={{ color: 'var(--primary-color)', fontSize: '1.2em', fontWeight: 700 }}>
+                                <InlineMath math={`E = ${results.error.toFixed(4)}`} />
+                            </div>
                         </div>
                     )}
                     
@@ -296,15 +313,11 @@ const InterpolationMethods: React.FC = () => {
                             border: '1px solid var(--success-color)'
                         }}>
                             <strong style={{ color: 'var(--text-dark)', display: 'block', marginBottom: '8px' }}>
-                                Estimativa <InlineMath math={`F(${estimateX})`} />:
+                                Estimativa:
                             </strong>
-                            <span style={{ 
-                                color: 'var(--primary-color)',
-                                fontSize: '1.3em',
-                                fontWeight: 700
-                            }}>
-                                {results.estimate.toFixed(6)}
-                            </span>
+                            <div style={{ color: 'var(--primary-color)', fontSize: '1.3em', fontWeight: 700 }}>
+                                <InlineMath math={`F(${estimateX}) = ${results.estimate.toFixed(6)}`} />
+                            </div>
                         </div>
                     )}
                 </div>

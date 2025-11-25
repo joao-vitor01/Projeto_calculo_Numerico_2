@@ -1,10 +1,9 @@
-// src/pages/IterativeMethods.tsx
 
 import React, { useState } from 'react';
 import MatrixInput from '../components/MatrixInput'; // Reutiliza o input de matriz
 import { gaussSeidel } from '../algorithms/gaussSeidel'; // O novo algoritmo
 
-const IterativeMethods: React.FC = () => {
+const IterativeMethods = () => {
     // Estado para os parâmetros específicos do método iterativo
     const [tolerance, setTolerance] = useState<number>(0.0001);
     const [initialGuessInput, setInitialGuessInput] = useState<string>('0, 0, 0'); // String para facilitar o input do usuário

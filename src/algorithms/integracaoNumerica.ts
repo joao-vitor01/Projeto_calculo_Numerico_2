@@ -1,4 +1,3 @@
-// src/algorithms/integracaoNumerica.ts
 
 export interface Point {
     x: number;

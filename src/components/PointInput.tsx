@@ -13,7 +13,7 @@ interface PointInputProps {
     initialData?: Point[]; // Dados iniciais opcionais para pré-preencher os pontos
 }
 
-const PointInput: React.FC<PointInputProps> = ({ minPoints, onSolve, initialData }) => {
+const PointInput = ({ minPoints, onSolve, initialData }: PointInputProps) => {
     // Inicializa com um conjunto básico de pontos (ajustável) ou com os dados iniciais fornecidos
     const [points, setPoints] = useState<Point[]>(
         initialData || [
@@ -21,6 +21,11 @@ const PointInput: React.FC<PointInputProps> = ({ minPoints, onSolve, initialData
             { x: 1.5, y: 13 },
             { x: 2.6, y: 11 },
             { x: 4.2, y: 9 },
+            { x: 6, y: 6 },
+            { x: 4.2, y: 9 },
+            { x: 8.2, y: 4 },
+            { x: 10, y: 2 },
+            { x: 11.4, y: 1 },
         ]
     );
     const [error, setError] = useState<string | null>(null);
