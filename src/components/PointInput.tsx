@@ -209,7 +209,7 @@ const PointInput = ({ minPoints, onSolve, initialData }: PointInputProps) => {
                     minWidth: '250px'
                 }}
             >
-                🚀 Calcular Regressão/Interpolação
+                🚀 Calcular Solução
             </button>
             
             {error && (

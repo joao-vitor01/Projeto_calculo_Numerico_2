@@ -8,7 +8,7 @@ import {
     exponentialRegression, 
     calculateExponentialError
 } from '../algorithms/minimosQuadrados'; // Importação COMPLETA dos algoritmos de Mínimos Quadrados
-import { lagrangeInterpolation } from '../algorithms/lagrange'; 
+import { lagrangeInterpolation } from '../algorithms/lagrangeInterpolation'; 
 import { newtonInterpolation } from '../algorithms/newtonInterpolation'; 
 import 'katex/dist/katex.min.css';
 import { InlineMath } from 'react-katex';

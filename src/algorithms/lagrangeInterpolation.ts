@@ -22,7 +22,7 @@ export function lagrangeInterpolation(points: Point[], xEstimate: number): numbe
                 const numerator = xEstimate - points[j].x;
                 const denominator = points[i].x - points[j].x;
 
-                // Evita divisão por zero no caso de pontos x repetidos (que não deveria ocorrer em interpolação)
+                // Evita divisão por zero no caso de pontos x repetidos 
                 if (Math.abs(denominator) < 1e-10) {
                     console.error("Erro Lagrange: Pontos X duplicados.");
                     return NaN; 

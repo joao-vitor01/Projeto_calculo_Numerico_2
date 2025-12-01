@@ -1,6 +1,5 @@
 import { gaussElimination } from './gaussElimination'; 
 
-// Importante: a interface Point deve ser a mesma usada em todo o seu projeto.
 export interface Point {
     x: number;
     y: number;
@@ -17,7 +16,7 @@ export function linearRegression(points: Point[]): number[] | null {
     const n = points.length;
     if (n < 2) return null;
 
-    // Somas necessárias para o sistema normal (2x2)
+    // Somas necessárias para o sistema normal
     let sumX = 0;
     let sumY = 0;
     let sumX2 = 0;

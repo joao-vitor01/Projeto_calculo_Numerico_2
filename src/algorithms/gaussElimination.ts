@@ -19,8 +19,6 @@ export function gaussElimination(A: number[][], b: number[]): number[] | null {
 
         // Verificação de Singularidade
         if (Math.abs(pivot) < 1e-10) { 
-            // Para sistemas reais, é bom implementar Pivotamento Parcial aqui!
-            // Para simplificar, vamos apenas retornar null.
             console.error("Erro: Pivot é zero ou muito próximo de zero. Matriz singular ou necessita de pivotamento.");
             return null; 
         }
