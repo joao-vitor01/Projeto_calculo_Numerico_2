@@ -44,10 +44,7 @@ export function linearRegression(points: Point[]): number[] | null {
     return coefficients;
 }
 
-/**
- * Calcula o Erro Quadrático para a regressão linear.
- * @param coefficients Coeficientes [a0, a1] da reta (G(x)).
- */
+
 export function calculateError(points: Point[], coefficients: number[]): number {
     const [a0, a1] = coefficients;
     let errorSum = 0;
@@ -112,10 +109,7 @@ export function quadraticRegression(points: Point[]): number[] | null {
     return coefficients;
 }
 
-/**
- * Calcula o Erro Quadrático para a regressão quadrática (Parábola).
- * @param coefficients Coeficientes [a0, a1, a2] da parábola (G(x)).
- */
+
 export function calculateQuadraticError(points: Point[], coefficients: number[]): number {
     const [a0, a1, a2] = coefficients;
     let errorSum = 0;
@@ -185,10 +179,7 @@ export function exponentialRegression(points: Point[]): number[] | null {
     return [a, b]; // Retorna [a, b]
 }
 
-/**
- * Calcula o Erro Quadrático para a regressão exponencial.
- * @param coefficients Coeficientes [a, b] da função exponencial (G(x) = a * exp(b*x)).
- */
+
 export function calculateExponentialError(points: Point[], coefficients: number[]): number {
     const [a, b] = coefficients;
     let errorSum = 0;

@@ -1,12 +1,7 @@
 
 import { Point } from '../components/PointInput';
 
-/**
- * Interpola um valor X usando o Polinômio de Lagrange.
- * @param points O conjunto de pontos (xi, yi) para interpolação.
- * @param xEstimate O valor de X onde se deseja estimar o valor F(x).
- * @returns O valor F(x) estimado.
- */
+
 export function lagrangeInterpolation(points: Point[], xEstimate: number): number {
     const n = points.length;
     let Px = 0; // O valor final do polinômio P(x)

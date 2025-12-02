@@ -1,12 +1,4 @@
-/**
- * Resolve um sistema de equações lineares Ax=b usando o Método de Gauss-Seidel.
- * @param A A matriz de coeficientes.
- * @param b O vetor de termos independentes.
- * @param initialGuess A estimativa inicial para o vetor solução x (ex: [0, 0, 0]).
- * @param tolerance A precisão desejada para o critério de parada.
- * @param maxIterations O número máximo de iterações permitidas.
- * @returns O vetor solução x, ou null se não convergir.
- */
+
 export function gaussSeidel(
     A: number[][],
     b: number[],
@@ -42,8 +34,6 @@ export function gaussSeidel(
 
             // Verifica o pivô (elemento da diagonal) para evitar divisão por zero
             if (Math.abs(A[i][i]) < 1e-10) {
-                 // Neste ponto, seria ideal tentar o critério de Sassenfeld [cite: 70] ou das linhas [cite: 71]
-                 // Para este algoritmo, se o pivô for zero, retorna erro de singularidade.
                 console.error("Erro: Elemento diagonal (pivô) é zero. O sistema pode não ser estritamente diagonal dominante.");
                 return null; 
             }

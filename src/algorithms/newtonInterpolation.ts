@@ -1,12 +1,7 @@
 
 import { Point } from '../components/PointInput';
 
-/**
- * Interpola um valor X usando o Polinômio de Newton (Diferenças Divididas).
- * @param points O conjunto de pontos (xi, yi) para interpolação.
- * @param xEstimate O valor de X onde se deseja estimar o valor F(x).
- * @returns O valor F(x) estimado.
- */
+
 export function newtonInterpolation(points: Point[], xEstimate: number): number {
     const n = points.length;
     // Tabela F (diferenças divididas), inicializada com os valores de Y

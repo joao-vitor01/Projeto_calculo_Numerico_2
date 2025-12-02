@@ -4,11 +4,7 @@ export interface Point {
     y: number;
 }
 
-/**
- * Aplica a Regra do Trapézio Repetida para calcular a integral (área).
- * @param points O conjunto de pontos (xi, f(xi)).
- * @returns O valor da integral aproximada.
- */
+
 export function trapezoidalRule(points: Point[]): number {
     const n = points.length - 1; // Número de subintervalos
     if (n < 1) return 0;
@@ -29,12 +25,7 @@ export function trapezoidalRule(points: Point[]): number {
     return integral;
 }
 
-/**
- * Aplica a Regra de Simpson Repetida (1/3) para calcular a integral (área).
- * Requer um número PAR de subintervalos (n) ou um número ÍMPAR de pontos (n+1).
- * @param points O conjunto de pontos (xi, f(xi)).
- * @returns O valor da integral aproximada.
- */
+
 export function simpsonRule(points: Point[]): number | null {
     const n = points.length - 1; // Número de subintervalos
     
