@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 // Define a interface para um ponto (x, y)
 export interface Point {

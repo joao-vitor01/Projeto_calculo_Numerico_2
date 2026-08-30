@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PointInput, { Point } from '../components/PointInput';
 import { 
     linearRegression, 
@@ -29,21 +29,6 @@ interface RegressionResults {
     quadratic: { coeffs: number[] | null, error: number | null };
     exponential: { coeffs: number[] | null, error: number | null };
 }
-
-
-// =========================================================================
-// FUNÇÕES AUXILIARES DE MODELAGEM (Necessárias para exibir a equação formatada)
-// =========================================================================
-
-// Função que retorna o valor Y para um dado X usando os coeficientes da Reta
-const linearModel = (x: number, [a0, a1]: number[]): number => a0 + a1 * x;
-
-// Função que retorna o valor Y para um dado X usando os coeficientes da Parábola
-const quadraticModel = (x: number, [a0, a1, a2]: number[]): number => a0 + a1 * x + a2 * x * x;
-
-// Função que retorna o valor Y para um dado X usando os coeficientes da Exponencial
-const exponentialModel = (x: number, [a, b]: number[]): number => a * Math.exp(b * x);
-
 
 const InterpolationMethods = () => {
     const [selectedMethod, setSelectedMethod] = useState<T3Method>('regression');

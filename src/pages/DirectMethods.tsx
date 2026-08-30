@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import { useState } from 'react';
 import MatrixInput from '../components/MatrixInput';
 import { gaussElimination } from '../algorithms/gaussElimination';
 import { luFactorization } from '../algorithms/luFactorization'; 

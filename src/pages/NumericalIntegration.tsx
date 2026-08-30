@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PointInput, { Point } from '../components/PointInput';
 import { trapezoidalRule, simpsonRule } from '../algorithms/integracaoNumerica';
 
@@ -20,7 +20,7 @@ const NumericalIntegration = () => {
         setResult(null);
 
         const h = points.length > 1 ? points[1].x - points[0].x : 0;
-        const isEquallySpaced = points.every((p, i, arr) => 
+        const isEquallySpaced = points.every((_, i, arr) => 
             i === 0 || Math.abs(arr[i].x - arr[i - 1].x - h) < 1e-6
         );
 

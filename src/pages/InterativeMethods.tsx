@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import { useState } from 'react';
 import MatrixInput from '../components/MatrixInput'; // Reutiliza o input de matriz
 import { gaussSeidel } from '../algorithms/gaussSeidel'; // O novo algoritmo
 
